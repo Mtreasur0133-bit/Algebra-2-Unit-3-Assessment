@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 50px;
+    text-align: center;
+    background-color: #121212;
+    color: white;
+  }
+  .open-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.1s;
+  }
+  .open-btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+</style>
+</head>
+<body>
+
+<!-- Main Trigger Button -->
+<button class="open-btn" onclick="openCloakedSite()">Launch Stealth Game Portal</button>
+
+<script>
+function openCloakedSite() {
+  // 1. Open a completely blank new tab
+  var win = window.open('about:blank', '_blank');
+  
+  if (win) {
+    // 2. Inject the fullscreen iframe into the blank tab
+    win.document.write(`
+      <!DOCTYPE html>
+      <html style="margin:0; padding:0; height:100%; width:100%; overflow:hidden;">
+      <head>
+        <title>Google Docs</title> <!-- Fake tab title for safety -->
+        <link rel="icon" type="image/x-icon" href="https://gstatic.com">
+      </head>
+      <body style="margin:0; padding:0; height:100%; width:100%; overflow:hidden; background:#000;">
+        <iframe 
+          src="https://bestspark.v6.rocks/games/" 
+          style="width:100%; height:100%; border:none; margin:0; padding:0;" 
+          allow="autoplay; fullscreen; gamepad"
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups">
+        </iframe>
+      </body>
+      </html>
+    `);
+    
+    // 3. Finalize the document rendering
+    win.document.close();
+  } else {
+    // Alert user if browser blocks the sudden popup
+    alert("Popup Blocked! Please click the icon in your URL bar to allow popups.");
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Docs - Algebra 1 Notes</title>
+    <link rel="icon" href="https://gstatic.com">
+    <style>
+        body { background: #0b0f19; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: 'Segoe UI', sans-serif; color: white; }
+        .container { text-align: center; background: #161b22; padding: 40px; border-radius: 12px; border: 1px solid #30363d; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+        input { width: 300px; padding: 12px; border-radius: 6px; border: 1px solid #4285f4; background: #0d1117; color: white; margin-bottom: 20px; outline: none; }
+        .btn { padding: 12px 30px; background: #4285f4; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn:hover { background: #357ae8; box-shadow: 0 0 15px rgba(66, 133, 244, 0.4); }
+        .footer { margin-top: 15px; color: #8b949e; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 style="margin-top:0;">Shared Workspace</h2>
+    <input type="text" id="targetUrl" placeholder="Enter any URL (e.g. youtube.com)" value="https://bloxd.io">
+    <br>
+    <button class="btn" onclick="launchUniversal()">Open Secure Doc</button>
+    <div class="footer">Status: Cloak Active (Press ` to Panic)</div>
+</div>
+
+<script>
+function launchUniversal() {
+    let url = document.getElementById('targetUrl').value;
+    
+    if (!url.startsWith('http')) url = 'https://' + url;
+
+    // Check if it's a game that needs a direct connection vs a site that needs a proxy
+    let finalUrl = url;
+    const isGame = url.includes('bloxd.io') || url.includes('pizzaedition') || url.includes('bloxdk12');
+
+    if (!isGame) {
+        // This is a public CORS proxy. It helps bypass the "Connection Refused" error for sites like YouTube.
+        finalUrl = 'https://allorigins.win' + encodeURIComponent(url);
+    }
+
+    const win = window.open('about:blank', '_blank');
+    if (!win) return alert("Enable pop-ups!");
+
+    // Apply Cloak
+    win.document.title = "Google Docs - Shared Project";
+    const link = win.document.createElement('link');
+    link.rel = 'icon';
+    link.href = 'https://gstatic.com';
+    win.document.head.appendChild(link);
+
+    // Build the Frame
+    const iframe = win.document.createElement('iframe');
+    iframe.src = finalUrl;
+    iframe.style.cssText = "position:fixed; top:0; left:0; width:100%; height:100%; border:none; z-index:9999; background:white;";
+    
+    // Allow everything (Pointer lock for games, scripts for sites)
+    iframe.setAttribute("allow", "autoplay; fullscreen; pointer-lock; gamepad; camera; microphone");
+    iframe.setAttribute("sandbox", "allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin");
+
+    win.document.body.style.margin = "0";
+    win.document.body.appendChild(iframe);
+
+    // Panic Key: Backtick (`) redirects to Classroom
+    win.addEventListener('keydown', function(e) {
+        if (e.key === '`') win.location.replace("https://google.com");
+    });
+}
+</script>
+</body>
+</html>

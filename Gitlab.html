@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Cooking Frame Opener</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #fff5e6;
+            padding: 50px;
+        }
+        .recipe-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: inline-block;
+            max-width: 400px;
+        }
+        .btn {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .btn:hover {
+            background-color: #e64c4c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="recipe-card">
+        <h2>🍲 Secret Chef Recipe</h2>
+        <p>Press the button below to bake your code and serve the webpage inside a clean, new about:blank frame!</p>
+        
+        <!-- The button triggers the JavaScript recipe function below -->
+        <button class="btn" onclick="openAboutBlankFrame()">🍳 Serve in about:blank</button>
+    </div>
+
+    <script>
+        function openAboutBlankFrame() {
+            // 1. Open a completely empty new browser frame tab
+            var newTab = window.open('about:blank', '_blank');
+            
+            if (newTab) {
+                // 2. Define the URL we want to embed inside the frame
+                var targetUrl = "https://gitlab.io";
+                
+                // 3. Inject an iframe filling 100% of the screen into the about:blank page
+                newTab.document.write(`
+                    <html style="margin:0; padding:0; height:100%; width:100%;">
+                        <head>
+                            <title>Loaded Recipe</title>
+                        </head>
+                        <body style="margin:0; padding:0; height:100%; width:100%; overflow:hidden;">
+                            <iframe src="${targetUrl}" style="border:none; width:100%; height:100%; margin:0; padding:0;"></iframe>
+                        </body>
+                    </html>
+                `);
+                
+                // 4. Finalize the document rendering
+                newTab.document.close();
+            } else {
+                alert("Please allow pop-ups for this site to open the frame!");
+            }
+        }
+    </script>
+
+</body>
+</html>
