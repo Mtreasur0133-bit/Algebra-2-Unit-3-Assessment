@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Uranium Games
+    </title>
+    <link id="favicon" rel="icon" href="data:image/svg+xml,&lt;svg xmlns=&#39;http://www.w3.org/2000/svg&#39; viewBox=&#39;0 0 100 100&#39;&gt;&lt;text y=&#39;.9em&#39; font-size=&#39;90&#39;&gt;☢️&lt;/text&gt;&lt;/svg&gt;" />
+    <style>
+      :root {
+  --primary: #00ff88;
+  --primary-rgb: 0, 255, 136;
+  --bg: #0a0e1a;
+  --card-bg: rgba(10, 20, 30, 0.85);
+  --glow: 0.35;
+  --blur: 12px;
+  --card-radius: 18px;
+  --font-scale: 1;
+  --anim-strength: 1;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:&#39;Segoe UI&#39;,system-ui,Tahoma,Geneva,Verdana,sans-serif;
+  background:var(--bg);
+  min-height:100vh;
+  color:#fff;
+  overflow-x:hidden;
+  position:relative;
+  font-size:calc(16px * var(--font-scale));
+}
+body::before{
+  content:&#39;&#39;;
+  position:fixed;inset:0;
+  background:
+    radial-gradient(circle at 20% 50%,rgba(var(--primary-rgb),0.12) 0%,transparent 50%),
+    radial-gradient(circle at 80% 80%,rgba(var(--primary-rgb),0.10) 0%,transparent 50%),
+    radial-gradient(circle at 40% 20%,rgba(var(--primary-rgb),0.06) 0%,transparent 40%);
+  pointer-events:none;z-index:0;
+}
+
+.container{max-width:1440px;margin:0 auto;padding:20px;position:relative;z-index:1;}
+
+header{
+  text-align:center;
+  padding:42px 24px 36px;
+  background:var(--card-bg);
+  backdrop-filter:blur(var(--blur));
+  border-radius:22px;
+  margin-bottom:28px;
+  box-shadow:
+    0 0 calc(40px * var(--glow)) rgba(var(--primary-rgb),0.35),
+    inset 0 0 60px rgba(var(--primary-rgb),0.08),
+    0 10px 36px rgba(0,0,0,0.55);
+  border:1px solid rgba(var(--primary-rgb),0.32);
+  position:relative;overflow:hidden;
+  animation:slideDown 0.55s ease-out, glowPulse 3.2s ease-in-out infinite;
+}
+header::before{
+  content:&#39;☢️&#39;;
+  position:absolute;font-size:14em;opacity:0.04;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  animation:rotate 22s linear infinite;
+  pointer-events:none;
+}
+@keyframes rotate{to{transform:translate(-50%,-50%) rotate(360deg);}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-28px);}to{opacity:1;transform:translateY(0);}}
+@keyframes glowPulse{
+  0%,100%{box-shadow:0 0 calc(40px * var(--glow)) rgba(var(--primary-rgb),0.35),inset 0 0 60px rgba(var(--primary-rgb),0.08),0 10px 36px rgba(0,0,0,0.55);}
+  50%{box-shadow:0 0 calc(60px * var(--glow)) rgba(var(--primary-rgb),0.5),inset 0 0 80px rgba(var(--primary-rgb),0.12),0 10px 36px rgba(0,0,0,0.55);}
+}
+
+h1{
+  font-size:3.6em;font-weight:900;letter-spacing:4px;margin-bottom:6px;
+  background:linear-gradient(90deg,var(--primary),#39ff14,var(--primary));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-shadow:0 0 18px rgba(var(--primary-rgb),0.55);
+  position:relative;z-index:1;
+}
+.tagline{font-size:1.05em;color:var(--primary);opacity:0.85;position:relative;z-index:1;}
+.status-line{margin-top:10px;font-size:0.78em;letter-spacing:1.5px;color:rgba(var(--primary-rgb),0.65);position:relative;z-index:1;}
+
+.clock-wrap{
+  position:absolute;top:18px;right:22px;
+  font-variant-numeric:tabular-nums;
+  font-size:0.95em;letter-spacing:1px;
+  color:var(--primary);
+  text-shadow:0 0 12px rgba(var(--primary-rgb),0.5);
+  z-index:2;
+  display:flex;flex-direction:column;align-items:flex-end;gap:2px;
+}
+.clock-time{font-weight:700;font-size:1.15em;}
+.clock-date{font-size:0.72em;opacity:0.7;}
+
+/* ===== APPS SECTION ===== */
+.apps-section {
+  margin-bottom: 32px;
+}
+.section-title {
+  font-size: 1.15em;
+  color: var(--primary);
+  margin-bottom: 14px;
+  letter-spacing: 1px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+.app-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--blur));
+  border-radius: 16px;
+  border: 1px solid rgba(var(--primary-rgb), 0.35);
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 18px rgba(var(--primary-rgb), 0.15);
+}
+.app-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary);
+  box-shadow: 0 0 28px rgba(var(--primary-rgb), 0.35);
+}
+.app-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(var(--primary-rgb), 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6em;
+  flex-shrink: 0;
+}
+.app-info h3 {
+  font-size: 1.05em;
+  color: var(--primary);
+  margin-bottom: 3px;
+}
+.app-info p {
+  font-size: 0.78em;
+  color: rgba(var(--primary-rgb), 0.6);
+}
+
+.top-controls{
+  display:flex;justify-content:center;gap:14px;flex-wrap:wrap;
+  margin:0 0 22px;align-items:center;
+}
+.search-bar input{
+  width:min(520px,90vw);padding:14px 24px;font-size:1.05em;
+  border:2px solid rgba(var(--primary-rgb),0.38);
+  border-radius:50px;background:rgba(10,20,30,0.92);
+  color:var(--primary);box-shadow:0 0 18px rgba(var(--primary-rgb),0.18);
+  transition:all 0.25s ease;
+}
+.search-bar input::placeholder{color:rgba(var(--primary-rgb),0.45);}
+.search-bar input:focus{
+  outline:none;border-color:var(--primary);
+  box-shadow:0 0 28px rgba(var(--primary-rgb),0.4);
+  transform:scale(1.015);
+}
+
+.filter-bar{display:flex;justify-content:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.filter-btn,.settings-btn{
+  background:rgba(10,20,30,0.9);
+  border:2px solid rgba(var(--primary-rgb),0.28);
+  color:rgba(var(--primary-rgb),0.75);
+  padding:9px 20px;border-radius:30px;font-size:0.88em;font-weight:600;
+  letter-spacing:0.8px;cursor:pointer;transition:all 0.22s ease;
+}
+.filter-btn:hover,.settings-btn:hover{
+  border-color:var(--primary);color:var(--primary);
+  box-shadow:0 0 14px rgba(var(--primary-rgb),0.28);
+}
+.filter-btn.active{
+  background:var(--primary);color:#000;border-color:var(--primary);
+  box-shadow:0 0 18px rgba(var(--primary-rgb),0.55);
+}
+
+.game-count{font-size:0.95em;color:var(--primary);text-align:right;padding-right:8px;margin-bottom:8px;opacity:0.9;font-weight:600;}
+
+.games-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(var(--card-min,200px),1fr));
+  gap:26px;margin-top:20px;justify-items:center;
+}
+@media(max-width:1000px){.games-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:700px){.games-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:420px){.games-grid{grid-template-columns:1fr;}}
+
+.game-card{
+  background:var(--card-bg);backdrop-filter:blur(var(--blur));
+  border-radius:var(--card-radius);overflow:hidden;cursor:pointer;
+  transition:transform 0.35s ease,box-shadow 0.35s ease,border-color 0.25s;
+  box-shadow:0 0 18px rgba(var(--primary-rgb),0.18),0 8px 22px rgba(0,0,0,0.5);
+  border:1px solid rgba(var(--primary-rgb),0.28);
+  text-decoration:none;color:inherit;display:block;width:100%;max-width:230px;
+  animation:fadeInUp 0.45s ease-out both;
+}
+.game-card:hover{
+  transform:translateY(calc(-10px * var(--anim-strength))) scale(calc(1 + 0.025 * var(--anim-strength)));
+  box-shadow:0 0 36px rgba(var(--primary-rgb),0.45),0 14px 36px rgba(0,0,0,0.55);
+  border-color:var(--primary);
+}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+.game-image{width:100%;aspect-ratio:1/1;background:linear-gradient(135deg,#001a0f,#003d29);position:relative;overflow:hidden;}
+.game-image img{width:100%;height:100%;object-fit:cover;transition:transform 0.35s ease;}
+.game-card:hover .game-image img{transform:scale(1.06);}
+.game-image .fallback{
+  position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+  flex-direction:column;gap:6px;color:rgba(var(--primary-rgb),0.5);
+  font-size:0.72em;letter-spacing:1.5px;text-align:center;padding:10px;
+}
+.game-info{padding:16px 18px 18px;}
+.game-title{font-size:1.12em;font-weight:700;margin-bottom:3px;color:var(--primary);text-shadow:0 0 10px rgba(var(--primary-rgb),0.4);}
+.game-author{font-size:0.7em;color:rgba(var(--primary-rgb),0.5);letter-spacing:0.8px;}
+
+.floating-particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.particle{
+  position:absolute;width:3px;height:3px;background:var(--primary);
+  border-radius:50%;box-shadow:0 0 10px var(--primary);
+  animation:float 14s infinite ease-in-out;
+  opacity:0;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0) translateX(0);opacity:0;}
+  12%,88%{opacity:0.85;}
+  50%{transform:translateY(-110px) translateX(40px);}
+}
+
+.loading-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:rgba(var(--primary-rgb),0.7);}
+.spinner{
+  width:38px;height:38px;border:3px solid rgba(var(--primary-rgb),0.2);
+  border-top-color:var(--primary);border-radius:50%;margin:0 auto 14px;
+  animation:spin 0.75s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ===== GAME MODAL ===== */
+#gameModal{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.94);
+  z-index:9999;align-items:center;justify-content:center;flex-direction:column;
+}
+#gameFrame{display:block;width:92vw;height:86vh;max-width:1400px;max-height:900px;border:3px solid var(--primary);border-radius:16px;box-shadow:0 0 30px rgba(var(--primary-rgb),0.55);background:#000;}
+#gameModal:fullscreen{background:#000;}
+#gameModal:fullscreen #gameFrame{width:100vw;height:100vh;max-width:none;max-height:none;border:none;border-radius:0;box-shadow:none;}
+.modal-controls {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+.modal-btn {
+  background: var(--primary);
+  color: #000;
+  font-weight: 700;
+  font-size: 0.95em;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(var(--primary-rgb), 0.55);
+  transition: 0.25s;
+}
+.modal-btn:hover {
+  filter: brightness(1.15);
+  transform: scale(1.04);
+}
+#modalError{display:none;flex-direction:column;align-items:center;gap:12px;color:#ff5c5c;text-align:center;max-width:420px;}
+#modalError .icon{font-size:2.3em;}
+
+/* Settings Panel */
+.settings-panel{
+  position:fixed;top:0;right:-400px;width:380px;max-width:95vw;height:100%;
+  background:rgba(8,14,22,0.97);backdrop-filter:blur(18px);
+  border-left:1px solid rgba(var(--primary-rgb),0.3);
+  z-index:10000;padding:28px 24px;overflow-y:auto;
+  transition:right 0.32s cubic-bezier(0.22,1,0.36,1);
+  box-shadow:-12px 0 40px rgba(0,0,0,0.5);
+}
+.settings-panel.open{right:0;}
+.settings-panel h2{color:var(--primary);margin-bottom:22px;font-size:1.4em;letter-spacing:1px;}
+.settings-group{margin-bottom:20px;}
+.settings-group label{display:block;font-size:0.84em;color:rgba(var(--primary-rgb),0.75);margin-bottom:7px;letter-spacing:0.5px;}
+.settings-group input[type=&#34;color&#34;],
+.settings-group input[type=&#34;range&#34;],
+.settings-group select{
+  width:100%;padding:9px;border-radius:10px;border:1px solid rgba(var(--primary-rgb),0.3);
+  background:rgba(0,0,0,0.35);color:#fff;
+}
+.settings-group input[type=&#34;range&#34;]{padding:0;accent-color:var(--primary);}
+.settings-row{display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.settings-actions{display:flex;gap:12px;margin-top:24px;}
+.settings-actions button{
+  flex:1;padding:12px;border-radius:12px;border:none;font-weight:700;cursor:pointer;
+  background:var(--primary);color:#000;font-size:0.95em;
+}
+.settings-actions button.secondary{background:transparent;border:2px solid rgba(var(--primary-rgb),0.4);color:var(--primary);}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;display:none;}
+.overlay.show{display:block;}
+
+/* Stealth visual */
+body.stealth header::before{content:&#39;📊&#39;;}
+body.stealth h1{
+  background:linear-gradient(90deg,#4285f4,#34a853,#fbbc05,#ea4335);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  text-shadow:none;letter-spacing:1px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
+}
+body.reduced-motion *,body.reduced-motion *::before,body.reduced-motion *::after{
+  animation-duration:0.01ms !important;transition-duration:0.01ms !important;
+}
+    </style>
+  </head>
+  <body>
+    <div class="floating-particles" id="particles">
+    </div>
+    <div class="container">
+      <header>
+        <div class="clock-wrap">
+          <div class="clock-time" id="clockTime">
+            --:--
+          </div>
+          <div class="clock-date" id="clockDate">
+            ---
+          </div>
+        </div>
+        <h1 id="mainTitle">
+          ☢️ URANIUM
+        </h1>
+        <p class="tagline" id="mainTagline">
+          Play hundreds of games instantly
+        </p>
+        <p class="status-line" id="statusLine">
+          Loading…
+        </p>
+      </header>
+      <!-- ===== APPS SECTION ===== -->
+      <div class="apps-section">
+        <div class="section-title">
+          📱 Apps
+        </div>
+        <div class="apps-grid">
+          <div class="app-card" onclick="openApp(&#39;Uranium AI&#39;, &#39;https://cdn.jsdelivr.net/gh/Onex558/mercury-movies-@main/uraniumainew.html&#39;)">
+            <div class="app-icon">
+              🤖
+            </div>
+            <div class="app-info">
+              <h3>
+                Uranium AI
+              </h3>
+              <p>
+                Chat with AI • Free
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="top-controls">
+        <div class="search-bar">
+          <input type="text" id="searchInput" placeholder="Search games…" autocomplete="off" />
+        </div>
+        <button class="settings-btn" id="openSettings">
+          ⚙️ Settings
+        </button>
+      </div>
+      <div class="filter-bar" id="filterBar">
+      </div>
+      <div id="gameCount" class="game-count">
+        — Games
+      </div>
+      <div class="games-grid" id="gamesGrid">
+        <div class="loading-state">
+          <div class="spinner">
+          </div>
+          <div>
+            Loading…
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- GAME MODAL -->
+    <div id="gameModal">
+      <div class="modal-controls">
+        <button class="modal-btn" id="fullscreenBtn">
+          ⛶ Fullscreen
+        </button>
+        <button class="modal-btn" id="closeBtn">
+          Close ✕
+        </button>
+      </div>
+      <iframe id="gameFrame" allowfullscreen="" sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-modals">
+      </iframe>
+      <div id="modalError">
+        <div class="icon">
+          ⚠️
+        </div>
+        <div id="modalErrorTitle" style="font-size:1.25em;font-weight:700;color:#fff;">
+        </div>
+        <div id="modalErrorReason" style="font-size:0.9em;color:rgba(255,255,255,0.6);">
+        </div>
+      </div>
+    </div>
+    <div class="overlay" id="settingsOverlay">
+    </div>
+    <aside class="settings-panel" id="settingsPanel">
+      <h2>
+        ⚙️ Settings
+      </h2>
+      <div class="settings-group">
+        <label>
+          Primary Color
+        </label>
+        <input type="color" id="setPrimary" value="#00ff88" />
+      </div>
+      <div class="settings-group">
+        <label>
+          Background
+        </label>
+        <input type="color" id="setBg" value="#0a0e1a" />
+      </div>
+      <div class="settings-group">
+        <label>
+          Glow
+          <span id="glowVal">          35%
+</span>
+        </label>
+        <input type="range" id="setGlow" min="0" max="100" value="35" />
+      </div>
+      <div class="settings-group">
+        <label>
+          Blur
+          <span id="blurVal">          12px
+</span>
+        </label>
+        <input type="range" id="setBlur" min="0" max="28" value="12" />
+      </div>
+      <div class="settings-group">
+        <label>
+          Card Size
+          <span id="cardVal">          200px
+</span>
+        </label>
+        <input type="range" id="setCard" min="160" max="280" value="200" />
+      </div>
+      <div class="settings-group">
+        <label>
+          Font Size
+          <span id="fontVal">          100%
+</span>
+        </label>
+        <input type="range" id="setFont" min="80" max="130" value="100" />
+      </div>
+      <div class="settings-group">
+        <label>
+          Animation
+          <span id="animVal">          100%
+</span>
+        </label>
+        <input type="range" id="setAnim" min="0" max="150" value="100" />
+      </div>
+      <div class="settings-group">
+        <label>
+          Particles
+          <span id="partVal">          18
+</span>
+        </label>
+        <input type="range" id="setParticles" min="0" max="40" value="18" />
+      </div>
+      <div class="settings-group">
+        <label>
+          Clock Format
+        </label>
+        <select id="setClockFormat">
+          <option value="12">
+            12-hour
+          </option>
+          <option value="24">
+            24-hour
+          </option>
+        </select>
+      </div>
+      <div class="settings-group">
+        <label class="settings-row">
+          <span>          Reduced Motion
+</span>
+          <input type="checkbox" id="setReducedMotion" />
+        </label>
+      </div>
+      <div class="settings-group">
+        <label class="settings-row">
+          <span>          🛡️ Stealth Mode (Tab Cloaking)
+</span>
+          <input type="checkbox" id="setStealth" />
+        </label>
+        <p style="font-size:0.78em;color:rgba(255,255,255,0.45);margin-top:6px;line-height:1.45;">
+          Changes the browser tab name + favicon to look like Google Slides, Docs, Drive, Classroom, etc.
+        </p>
+      </div>
+      <div class="settings-actions">
+        <button id="resetSettings" class="secondary">
+          Reset
+        </button>
+        <button id="closeSettings">
+          Done
+        </button>
+      </div>
+    </aside>
+    <script>
+      const DEFAULTS = {
+  primary: &#39;#00ff88&#39;,
+  bg: &#39;#0a0e1a&#39;,
+  glow: 35,
+  blur: 12,
+  card: 200,
+  font: 100,
+  anim: 100,
+  particles: 18,
+  clockFormat: &#39;12&#39;,
+  reducedMotion: false,
+  stealth: false
+};
+
+let settings = loadSettings();
+let allGames = [];
+let currentBlobUrl = null;
+let cloakInterval = null;
+let currentFilter = &#39;all&#39;;
+
+const gamesGrid   = document.getElementById(&#39;gamesGrid&#39;);
+const gameCountEl = document.getElementById(&#39;gameCount&#39;);
+const statusLine  = document.getElementById(&#39;statusLine&#39;);
+const searchInput = document.getElementById(&#39;searchInput&#39;);
+const gameModal   = document.getElementById(&#39;gameModal&#39;);
+const gameFrame   = document.getElementById(&#39;gameFrame&#39;);
+const modalError  = document.getElementById(&#39;modalError&#39;);
+const particlesEl = document.getElementById(&#39;particles&#39;);
+const filterBar   = document.getElementById(&#39;filterBar&#39;);
+
+/* ========== EXTERNAL SOURCES (GN Math etc.) ========== */
+const externalSources = [
+  {
+    name: &#34;GN Math Zone&#34;,
+    type: &#34;json&#34;,
+    json: &#34;https://cdn.jsdelivr.net/gh/freebuisness/assets@main/zones.json&#34;,
+    cover: &#34;https://cdn.jsdelivr.net/gh/freebuisness/covers@main&#34;,
+    html: &#34;https://cdn.jsdelivr.net/gh/freebuisness/html@main&#34;,
+    sourceTag: &#34;gnmath&#34;
+  }
+];
+
+/* ========== FULL GAME LIST ========== */
+const customGames = [
+  { name:&#34;Doom&#34;, author:&#34;id Software&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/1200.webp&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/doom.html&#34; },
+  { name:&#34;Doom 2&#34;, author:&#34;id Software&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/ss_05f81f237a6370c3c797af951b42291dc747d199.1920x1080.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/doom2.html&#34; },
+  { name:&#34;Doom 3&#34;, author:&#34;id Software&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/doom3box.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/doom3.html&#34; },
+  { name:&#34;Doom 64&#34;, author:&#34;Midway Games&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/doom_64_box.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/doom64.html&#34; },
+  { name:&#34;Doom RPG&#34;, author:&#34;id Software&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/doomrpg.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/doomrpg.html&#34; },
+  { name:&#34;Gran Turismo 2&#34;, author:&#34;Polyphony Digital&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/61qihedj%2B5l._ac_uf1000%2C1000_ql80_.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/gt2.html&#34; },
+  { name:&#34;GTA Advance&#34;, author:&#34;Rockstar Games&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/grand%20theft%20auto%20advance%20(usa)-image.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/gtaa.html&#34; },
+  { name:&#34;GTA China&#34;, author:&#34;Rockstar Games&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/grand%20theft%20auto%20-%20chinatown%20wars%20(usa)%20(en%2Cfr%2Cde%2Ces%2Cit)-image.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/gtachina.html&#34; },
+  { name:&#34;GTA Vice City Stories&#34;, author:&#34;Rockstar Games&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/gtavcs.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/gtavcs.html&#34; },
+  { name:&#34;Journey&#34;, author:&#34;thatgamecompany&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/journey-image.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/journey.html&#34; },
+  { name:&#34;LEGO Star Wars&#34;, author:&#34;Traveller&#39;s Tales&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/61xyz0rhcol._ac_uf1000%2C1000_ql80_.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/lsw.html&#34; },
+  { name:&#34;LEGO Star Wars 2&#34;, author:&#34;Traveller&#39;s Tales&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@refs/heads/main/images/download.jfif&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/lsw2.html&#34; },
+  { name:&#34;Super Mario World&#34;, author:&#34;Nintendo&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/super_mario_world_coverart.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/smw.html&#34; },
+  { name:&#34;Scribblenauts&#34;, author:&#34;5th Cell&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/scribblenauts_cover.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/scribblenauts.html&#34; },
+  { name:&#34;Opposing Force&#34;, author:&#34;Gearbox Software&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/opposing.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/opposing.html&#34; },
+  { name:&#34;Peggle&#34;, author:&#34;PopCap Games&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/peggle.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/peggle.html&#34; },
+  { name:&#34;Super Mario Bros&#34;, author:&#34;Nintendo&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/super_mario_bros._box.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/smb.html&#34; },
+  { name:&#34;Super Mario Bros 2&#34;, author:&#34;Nintendo&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/super%20mario%20bros.%202%20(usa)%20(rev%201)-image.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/smb2.html&#34; },
+  { name:&#34;Super Mario Bros 3&#34;, author:&#34;Nintendo&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/super%20mario%20bros.%203%20(usa)%20(rev%201)-image.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/smb3.html&#34; },
+  { name:&#34;Ms. Pac-Man&#34;, author:&#34;Namco&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/mspacman-thumb.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/mspacman.html&#34; },
+  { name:&#34;Patrick&#39;s&#34;, author:&#34;Uranium&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/OIP.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/patricks/index.html&#34; },
+  { name:&#34;Plants vs. Zombies&#34;, author:&#34;PopCap Games&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/plants%2Bvs.%2Bzombies%2B(usa)-image.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/pvz.html&#34; },
+  { name:&#34;Shotgun Mario 64&#34;, author:&#34;GomePlayTV&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/shotgunmario64.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/shotgunmario64.html&#34; },
+  { name:&#34;Pac-Man&#34;, author:&#34;Namco&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/puckman-thumb.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/puckman.html&#34; },
+  { name:&#34;Half-Life&#34;, author:&#34;Valve&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/half-life.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clhalflife.html&#34; },
+  { name:&#34;NBA JAM&#34;, author:&#34;EA SPORTS&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/nbajamte-1673053591219.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clNBAjam.html&#34; },
+  { name:&#34;BitLife&#34;, author:&#34;BitLife&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/OIP.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clbitlife.html&#34; },
+  { name:&#34;Paper Mario DS&#34;, author:&#34;Nintendo&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/paper%20mario%20ds.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clPaperMarioDSE.html&#34; },
+  { name:&#34;Bitplanes&#34;, author:&#34;Someone&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/bitplaness.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clbitplanes.html&#34; },
+  { name:&#34;Backyard Baseball 10&#34;, author:&#34;Nintendo&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/6333099-backyard-baseball-10-nintendo-ds-front-cover.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clbackyardbaseball10.html&#34; },
+  { name:&#34;Angry Birds&#34;, author:&#34;Rovio&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/angry%20birds.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clangrybirds.html&#34; },
+  { name:&#34;Flushed Away DS&#34;, author:&#34;Nintendo&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/ds_flushed_away_p_mvu68a.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/retro-games-@main/FlushedAway.html&#34; },
+  { name:&#34;Mario Party Advance&#34;, author:&#34;Nintendo&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/MariopartyGBA.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clMario%20Party%20Advance.html&#34; },
+  { name:&#34;Subway Surfers Berlin&#34;, author:&#34;NA&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/subway-surfers-berlin.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clsubwaysurfersberlin.html&#34; },
+  { name:&#34;Baseball Bros&#34;, author:&#34;NA&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/baseball_bros.webp&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clbaseballbros.html&#34; },
+  { name:&#34;Five Nights at Shrek&#39;s&#34;, author:&#34;NA&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/770ff34d046e6ccd6ee470d9d7b3d55f.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clfivenightsatshreks.html&#34; },
+  { name:&#34;FIFA World Cup 2026 SNES&#34;, author:&#34;Nintendo&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/image-49.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Mathisfunallfiles@main/worldcup.html&#34; },
+  { name:&#34;Cookie Clicker&#34;, author:&#34;NA&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/432bf350e866b2544f9a5cd80de83e0c24f4efddfd7811016c4aa33e48c5df7c.avif&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Mathisfunallfiles@main/cookie-clicker.html&#34; },
+  { name:&#34;Spaceflight Simulator&#34;, author:&#34;NA&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/09dc947ac1fdd31481539b5766a86513.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Mathisfunallfiles@main/Spaceflight%20Simulator.html&#34; },
+  { name:&#34;1v1.LOL&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/channels4_profile.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/cl1v1lol.html&#34; },
+  { name:&#34;2048&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/download.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/cl2048.html&#34; },
+  { name:&#34;2048 Cupcakes&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/download.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/cl2048cupcakes.html&#34; },
+  { name:&#34;3 Pandas&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/cl3pandas.html&#34; },
+  { name:&#34;3 Pandas Brazil&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/pandasinjapna.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/cl3pandasbrazil.html&#34; },
+  { name:&#34;3 Pandas Fantasy&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/3pandasinfanstasy.jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/cl3pandasfantasy.html&#34; },
+  { name:&#34;3 Pandas Japan&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/3pandasinjapan.jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/cl3pandasjapan.html&#34; },
+  { name:&#34;3 Pandas Night&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/panasdss%20night.jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/cl3pandasnight.html&#34; },
+  { name:&#34;3 Slices 2&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/3slicesof2.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/cl3slices2.html&#34; },
+  { name:&#34;4th and Goal&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/4thandgoal.jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/cl4thandgoal.html&#34; },
+  { name:&#34;8 Ball Classic&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/8BallBilliardsClassicTeaser.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/cl8ballclassic.html&#34; },
+  { name:&#34;8 Ball Pool&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/8-Ball-Pool.png.webp&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/cl8ballpool.html&#34; },
+  { name:&#34;ADOFAI&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/adofai.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clADOFAI.html&#34; },
+  { name:&#34;A Dark Room&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/adofai.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clADarkRoom.html&#34; },
+  { name:&#34;Adventure Capitalist&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/Adventure-Capitalist.webp&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clAdventureCapatalist.html&#34; },
+  { name:&#34;Altered Beast&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/altered-beast-3.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clAltered%20Beast.html&#34; },
+  { name:&#34;Geometry Dash Wave&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/geometry-dash-wave-game.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clGeometryDashWave.html&#34; },
+  { name:&#34;Awesome Pirates&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/Awesome-Pirates.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clAwesomePirates.html&#34; },
+  { name:&#34;B3313&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/sm64_b3313_fanart_by_modraw08_djcr62e-fullview.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clB3313.html&#34; },
+  { name:&#34;BFDI Branches&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/bfdi_branches__demo__poster__by_bobbyinteraction5_dhr7288-fullview.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clBFDIBranches.html&#34; },
+  { name:&#34;BMX 2&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@refs/heads/main/images/bmx%202.avif&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clBMX2.html&#34; },
+  { name:&#34;Bloons TD 1&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/OIP.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clBTD1.html&#34; },
+  { name:&#34;Bank Robbery&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/bank-robbery.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clBank%20Robbery.html&#34; },
+  { name:&#34;Bonanza Bros&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/Bonanza-Bros-destc-1024x576.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clBonanza-Bros.html&#34; },
+  { name:&#34;Bounty Of One&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/bounty-of-one-button-1696613856511.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clBountyOfOne.html&#34; },
+  { name:&#34;Brawl Stars&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/brawl-stars-game-ft.webp&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clBrawlstars.html&#34; },
+  { name:&#34;Cell To Singularity&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/celltosingularity-1673648155490.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clCellToSingularity.html&#34; },
+  { name:&#34;Chicken CS&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@refs/heads/main/images/chicken-cs_16x9-cover.avif&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clChickenCS.html&#34; },
+  { name:&#34;CircloO 2&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/CircloO_2.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clCircloO2.html&#34; },
+  { name:&#34;Crystal Castles&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/crystal-castles_5.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clCrystalCastles.html&#34; },
+  { name:&#34;Dashmetry&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/dashmetry.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clDashmetry.html&#34; },
+  { name:&#34;Dragon Ball Z Legacy of Goku&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/1200px-Dragon_Ball_Z-_The_Legacy_of_Goku_(us)_cover.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clDragonBallZTheLegacyofGoku.html&#34; },
+  { name:&#34;Dragon Quest IX&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/Dragon-Quest-IX-Box-art-1280px-50p.webp&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clDragonQuestIX.html&#34; },
+  { name:&#34;FIFA 07&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/fifa%207.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clFIFA07.html&#34; },
+  { name:&#34;FIFA 10&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@refs/heads/main/images/FIFA-10-Cover.avif&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clFIFA10.html&#34; },
+  { name:&#34;FIFA 11&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/Fifa11_Game_Cover.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clFIFA11.html&#34; },
+  { name:&#34;FNAF&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/fnaf1_cover.webp&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clFNAF.html&#34; },
+  { name:&#34;FNAF 2&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/five-nights-at-freddys-2-game.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clFNAF2.html&#34; },
+  { name:&#34;FNAF 3&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/fnaf3_cover.webp&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clFNAF3.html&#34; },
+  { name:&#34;FNAF 4&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@refs/heads/main/images/fnaf-4-poster.avif&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clFNAF4.html&#34; },
+  { name:&#34;Tomcat F-14 Flight Sim&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/56869-dan-kitchen-s-tomcat-the-f-14-fighter-simulator-atari-2600-front-cover.webp&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/retro-games-@main/atari2880%20tomcat%20f-14.html&#34; },
+  { name:&#34;MS Flight Sim Old&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/microsoft-flight-simulator-4-03-big.webp&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/microsoftflightsimold.html&#34; },
+  { name:&#34;Untime&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(6).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/cluntime.html&#34; },
+  { name:&#34;Untitled Goose Game&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(5).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/cluntitledgoosegame.html&#34; },
+  { name:&#34;Upgrade Complete&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(8).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clupgradecomplete.html&#34; },
+  { name:&#34;Upgrade Complete 2&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(7).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clupgradecomplete2.html&#34; },
+  { name:&#34;Upslash&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(9).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clupslash.html&#34; },
+  { name:&#34;Urban Champion&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/download%20(2).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clurbanchampion.html&#34; },
+  { name:&#34;Uster Rush&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/Screenshot%202026-08-18%208.43.47%20PM.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clusterrush.html&#34; },
+  { name:&#34;Vampire Survivors&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(10).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clvampiresurvivors.html&#34; },
+  { name:&#34;Vanguard&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/header.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clvanguard.html&#34; },
+  { name:&#34;Vapor Trails&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(11).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/clvaportrails.html&#34; },
+  { name:&#34;Minecraft Tower Defense&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(12).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clMINECRAFTTOWERDEFENSE.html&#34; },
+  { name:&#34;Hell Talker&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(1).webp&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/HellTaker.html&#34; },
+  { name:&#34;10 Minutes Til Dawn&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/cl10minutestildawn.html&#34; },
+  { name:&#34;Crossy Road&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(16).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clcrossyroad.html&#34; },
+  { name:&#34;Slope&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(1).png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clslope.html&#34; },
+  { name:&#34;Run&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(19).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clrun.html&#34; },
+  { name:&#34;Run 2&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(20).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clrun2.html&#34; },
+  { name:&#34;Run 3&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(21).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clrun3.html&#34; },
+  { name:&#34;Retro Bowl&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/unnamed.png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/offline/retrobowl.html&#34; },
+  { name:&#34;Baldi&#39;s Basics&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/baldisbasics_plus.webp&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clbaldisbasics.html&#34; },
+  { name:&#34;Chess&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(22).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clchessclassic.html&#34; },
+  { name:&#34;Minecraft&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/download%20(3).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clminecraftpocketedition.html&#34; },
+  { name:&#34;Stack&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(25).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/offline/stack.html&#34; },
+  { name:&#34;Happy Wheels&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/happy-wheels-logo.avif&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clhappywheels.html&#34; },
+  { name:&#34;Orange Roulette&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(27).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clOrangeRoulette.html&#34; },
+  { name:&#34;Friday Night Funkin Twiddler Finger&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(32).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clfnfTWIDDLEFINGER.html&#34; },
+  { name:&#34;Friday Night Funkin Aethos&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(33).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clfnfaethos.html&#34; },
+  { name:&#34;Friday Night Funkin Binary Breakdown&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(34).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clfnfbinarybreakdown.html&#34; },
+  { name:&#34;Friday Night Funkin Below depths&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(35).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clfnfbelowdepths.html&#34; },
+  { name:&#34;Friday Night Funkin Black Betrayal&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(36).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clfnfblackbetrayal.html&#34; },
+  { name:&#34;Friday Night Funkin B Side&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(37).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clfnfblackbetrayal.html&#34; },
+  { name:&#34;Friday Night Funkin Candy Carrier&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(38).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clfnfcandycarrier.html&#34; },
+  { name:&#34;Friday Night Funkin Chara&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(39).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clfnfchara.html&#34; },
+  { name:&#34;Friday Night Funkin City Tales&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(40).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clfnfcitytales.html&#34; },
+  { name:&#34;Friday Night Funkin Corrision&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(17).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clfridaynightfunkin.html&#34; },
+  { name:&#34;Friday Night Funkin Cory&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/maxresdefault.jpg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clfnfcory.html&#34; },
+  { name:&#34;Friday Night Funkin Crunchin&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(42).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clfnfcrunchin.html&#34; },
+  { name:&#34;Friday Night Funkin Deceiver&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(43).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clfnfdeciever.html&#34; },
+  { name:&#34;Friday Night Funkin Desolation&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(44).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clfnfdesolation.html&#34; },
+  { name:&#34;Friday Night Funkin Golden Apple&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(50).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clfnfgoldenapple.html&#34; },
+  { name:&#34;Doodle Jump&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(49).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/cldoodlejumpgoober.html&#34; },
+  { name:&#34;Basket Bros&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(54).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clbasketbros.html&#34; },
+  { name:&#34;Paper.io&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/6-1-684971-52.webp&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clpaperio.html&#34; },
+  { name:&#34;Moto x3m&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(55).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/offline/motox3m.html&#34; },
+  { name:&#34;Moto x3m 2&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(56).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clmotox3m2.html&#34; },
+  { name:&#34;Moto x3m Winter&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/moto-x3m-4-winter-logo.jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/offline/motox3mwinter.html&#34; },
+    { name:&#34;Google Dino Game&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/unnamed%20(1).png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clgoogledino.html&#34; },
+  { name:&#34;Pac Man&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(2).png&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/offline/pacman.html&#34; },
+  { name:&#34;Parking fury&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(57).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/offline/parkingfury.html&#34; },
+  { name:&#34;Fruit Ninja&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(58).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/offline/fruitninja.html&#34; },
+  { name:&#34;Flappy bird&#34;, author:&#34;Unknown&#34;, resolvedCover:&#34;https://cdn.jsdelivr.net/gh/Onex558/uranium-source-@main/images/images%20(59).jpeg&#34;, resolvedUrl:&#34;https://cdn.jsdelivr.net/gh/Onex558/Ultimate-games-stash-games-@main/UGS-Files/clflappybird.html&#34; },
+];
+
+/* ========== SETTINGS ========== */
+function loadSettings() {
+  try {
+    const raw = localStorage.getItem(&#39;uraniumSettings&#39;);
+    return raw ? { ...DEFAULTS, ...JSON.parse(raw) } : { ...DEFAULTS };
+  } catch { return { ...DEFAULTS }; }
+}
+function saveSettings() {
+  localStorage.setItem(&#39;uraniumSettings&#39;, JSON.stringify(settings));
+}
+
+/* ========== IMPROVED TAB CLOAKING ========== */
+const CLOAK_PROFILES = [
+  { title: &#34;Google Slides&#34;, icon: &#34;📊&#34; },
+  { title: &#34;Google Docs&#34;, icon: &#34;📄&#34; },
+  { title: &#34;Google Drive&#34;, icon: &#34;📁&#34; },
+  { title: &#34;Google Classroom&#34;, icon: &#34;🎓&#34; },
+  { title: &#34;Classroom&#34;, icon: &#34;🎓&#34; },
+  { title: &#34;Kahoot!&#34;, icon: &#34;🎮&#34; },
+  { title: &#34;Canvas&#34;, icon: &#34;📘&#34; },
+  { title: &#34;Google Sheets&#34;, icon: &#34;📈&#34; },
+  { title: &#34;Meet - Google&#34;, icon: &#34;📹&#34; },
+  { title: &#34;Docs&#34;, icon: &#34;📄&#34; },
+  { title: &#34;Slides&#34;, icon: &#34;📊&#34; },
+  { title: &#34;Drive&#34;, icon: &#34;📁&#34; },
+  { title: &#34;New Tab&#34;, icon: &#34;🌐&#34; }
+];
+
+function applyCloaking() {
+  const titleEl = document.getElementById(&#39;mainTitle&#39;);
+  const taglineEl = document.getElementById(&#39;mainTagline&#39;);
+  const favicon = document.getElementById(&#39;favicon&#39;);
+
+  if (settings.stealth) {
+    document.body.classList.add(&#39;stealth&#39;);
+    const profile = CLOAK_PROFILES[Math.floor(Math.random() * CLOAK_PROFILES.length)];
+    document.title = profile.title;
+    titleEl.textContent = profile.icon + &#34; &#34; + profile.title;
+    taglineEl.textContent = &#34;Educational resources and tools&#34;;
+    favicon.href = `data:image/svg+xml,&lt;svg xmlns=&#39;http://www.w3.org/2000/svg&#39; viewBox=&#39;0 0 100 100&#39;&gt;&lt;text y=&#39;.9em&#39; font-size=&#39;90&#39;&gt;${profile.icon}&lt;/text&gt;&lt;/svg&gt;`;
+
+    if (cloakInterval) clearInterval(cloakInterval);
+    cloakInterval = setInterval(() =&gt; {
+      if (settings.stealth) {
+        const p = CLOAK_PROFILES[Math.floor(Math.random() * CLOAK_PROFILES.length)];
+        document.title = p.title;
+        favicon.href = `data:image/svg+xml,&lt;svg xmlns=&#39;http://www.w3.org/2000/svg&#39; viewBox=&#39;0 0 100 100&#39;&gt;&lt;text y=&#39;.9em&#39; font-size=&#39;90&#39;&gt;${p.icon}&lt;/text&gt;&lt;/svg&gt;`;
+      }
+    }, 9000 + Math.random() * 6000);
+  } else {
+    document.body.classList.remove(&#39;stealth&#39;);
+    document.title = &#34;Uranium Games&#34;;
+    titleEl.textContent = &#34;☢️ URANIUM&#34;;
+    taglineEl.textContent = &#34;Play hundreds of games instantly&#34;;
+    favicon.href = &#34;data:image/svg+xml,&lt;svg xmlns=&#39;http://www.w3.org/2000/svg&#39; viewBox=&#39;0 0 100 100&#39;&gt;&lt;text y=&#39;.9em&#39; font-size=&#39;90&#39;&gt;☢️&lt;/text&gt;&lt;/svg&gt;&#34;;
+    if (cloakInterval) {
+      clearInterval(cloakInterval);
+      cloakInterval = null;
+    }
+  }
+}
+
+function applySettings() {
+  const root = document.documentElement;
+  root.style.setProperty(&#39;--primary&#39;, settings.primary);
+  const r = parseInt(settings.primary.slice(1,3),16);
+  const g = parseInt(settings.primary.slice(3,5),16);
+  const b = parseInt(settings.primary.slice(5,7),16);
+  root.style.setProperty(&#39;--primary-rgb&#39;, `${r},${g},${b}`);
+  root.style.setProperty(&#39;--bg&#39;, settings.bg);
+  root.style.setProperty(&#39;--glow&#39;, settings.glow / 100);
+  root.style.setProperty(&#39;--blur&#39;, settings.blur + &#39;px&#39;);
+  root.style.setProperty(&#39;--card-min&#39;, settings.card + &#39;px&#39;);
+  root.style.setProperty(&#39;--font-scale&#39;, settings.font / 100);
+  root.style.setProperty(&#39;--anim-strength&#39;, settings.anim / 100);
+  document.body.style.background = settings.bg;
+  document.body.classList.toggle(&#39;reduced-motion&#39;, settings.reducedMotion);
+  buildParticles(settings.particles);
+  applyCloaking();
+
+  document.getElementById(&#39;glowVal&#39;).textContent = settings.glow + &#39;%&#39;;
+  document.getElementById(&#39;blurVal&#39;).textContent = settings.blur + &#39;px&#39;;
+  document.getElementById(&#39;cardVal&#39;).textContent = settings.card + &#39;px&#39;;
+  document.getElementById(&#39;fontVal&#39;).textContent = settings.font + &#39;%&#39;;
+  document.getElementById(&#39;animVal&#39;).textContent = settings.anim + &#39;%&#39;;
+  document.getElementById(&#39;partVal&#39;).textContent = settings.particles;
+}
+
+function buildParticles(count) {
+  particlesEl.innerHTML = &#39;&#39;;
+  for (let i = 0; i &lt; count; i++) {
+    const p = document.createElement(&#39;div&#39;);
+    p.className = &#39;particle&#39;;
+    p.style.left = Math.random() * 100 + &#39;%&#39;;
+    p.style.top  = Math.random() * 100 + &#39;%&#39;;
+    p.style.animationDelay = (Math.random() * 12) + &#39;s&#39;;
+    p.style.animationDuration = (10 + Math.random() * 10) + &#39;s&#39;;
+    particlesEl.appendChild(p);
+  }
+}
+
+function updateClock() {
+  const now = new Date();
+  const optsTime = { hour: &#39;2-digit&#39;, minute: &#39;2-digit&#39;, second: &#39;2-digit&#39;, hour12: settings.clockFormat === &#39;12&#39; };
+  const optsDate = { weekday: &#39;short&#39;, month: &#39;short&#39;, day: &#39;numeric&#39; };
+  document.getElementById(&#39;clockTime&#39;).textContent = now.toLocaleTimeString([], optsTime);
+  document.getElementById(&#39;clockDate&#39;).textContent = now.toLocaleDateString([], optsDate);
+}
+
+/* ========== RENDER ========== */
+function renderGames(list) {
+  gameCountEl.textContent = list.length + &#39; Games&#39;;
+  gamesGrid.innerHTML = &#39;&#39;;
+  if (list.length === 0) {
+    gamesGrid.innerHTML = &#39;&lt;div class=&#34;loading-state&#34;&gt;No games match your search.&lt;/div&gt;&#39;;
+    return;
+  }
+  const frag = document.createDocumentFragment();
+  list.forEach((game, i) =&gt; {
+    const card = document.createElement(&#39;a&#39;);
+    card.href = &#39;#&#39;;
+    card.className = &#39;game-card&#39;;
+    card.style.animationDelay = (Math.min(i, 30) * 0.025) + &#39;s&#39;;
+    const sourceBadge = game.source === &#39;gnmath&#39;
+      ? &#39;&lt;span style=&#34;font-size:0.65em;opacity:0.55;letter-spacing:0.5px;&#34;&gt;GN Math&lt;/span&gt;&#39;
+      : &#39;&lt;span style=&#34;font-size:0.65em;opacity:0.55;letter-spacing:0.5px;&#34;&gt;Uranium&lt;/span&gt;&#39;;
+    card.innerHTML = `
+      &lt;div class=&#34;game-image&#34;&gt;
+        &lt;img src=&#34;${game.resolvedCover || &#39;&#39;}&#34; alt=&#34;${game.name}&#34; loading=&#34;lazy&#34;
+          onerror=&#34;this.style.display=&#39;none&#39;;this.parentElement.querySelector(&#39;.fallback&#39;).style.display=&#39;flex&#39;;&#34;&gt;
+        &lt;div class=&#34;fallback&#34;&gt;NO IMAGE&lt;br&gt;${game.name}&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&#34;game-info&#34;&gt;
+        &lt;div class=&#34;game-title&#34;&gt;${game.name}&lt;/div&gt;
+        &lt;div class=&#34;game-author&#34;&gt;${game.author || &#39;Unknown&#39;} · ${sourceBadge}&lt;/div&gt;
+      &lt;/div&gt;`;
+    card.onclick = e =&gt; { e.preventDefault(); openGame(game); };
+    frag.appendChild(card);
+  });
+  gamesGrid.appendChild(frag);
+}
+
+function buildFilterBar() {
+  const filters = [
+    { id: &#39;all&#39;, label: &#39;All&#39; },
+    { id: &#39;uranium&#39;, label: &#39;Uranium&#39; },
+    { id: &#39;gnmath&#39;, label: &#39;GN Math&#39; },
+    { id: &#39;flash&#39;, label: &#39;Flash&#39; },
+    { id: &#39;port&#39;, label: &#39;Ports&#39; },
+    { id: &#39;emulator&#39;, label: &#39;Emulator&#39; },
+    { id: &#39;fnf&#39;, label: &#39;FNF&#39; }
+  ];
+  filterBar.innerHTML = &#39;&#39;;
+  filters.forEach(f =&gt; {
+    const btn = document.createElement(&#39;button&#39;);
+    btn.className = &#39;filter-btn&#39; + (currentFilter === f.id ? &#39; active&#39; : &#39;&#39;);
+    btn.textContent = f.label;
+    btn.dataset.filter = f.id;
+    btn.onclick = () =&gt; {
+      currentFilter = f.id;
+      filterBar.querySelectorAll(&#39;.filter-btn&#39;).forEach(b =&gt; b.classList.toggle(&#39;active&#39;, b.dataset.filter === currentFilter));
+      handleSearch();
+    };
+    filterBar.appendChild(btn);
+  });
+}
+
+function handleSearch() {
+  const query = searchInput.value.toLowerCase().trim();
+  let results = allGames;
+
+  // Source / special filter
+  if (currentFilter === &#39;uranium&#39;) {
+    results = results.filter(g =&gt; g.source === &#39;uranium&#39;);
+  } else if (currentFilter === &#39;gnmath&#39;) {
+    results = results.filter(g =&gt; g.source === &#39;gnmath&#39;);
+  } else if ([&#39;flash&#39;, &#39;port&#39;, &#39;emulator&#39;, &#39;fnf&#39;].includes(currentFilter)) {
+    results = results.filter(g =&gt; Array.isArray(g.special) &amp;&amp; g.special.includes(currentFilter));
+  }
+
+  // Text search
+  if (query) {
+    const tokens = query.split(/\s+/);
+    results = results.filter(g =&gt; {
+      const target = `${g.name} ${g.author || &#39;&#39;}`.toLowerCase();
+      return tokens.every(t =&gt; target.includes(t));
+    });
+  }
+  renderGames(results);
+}
+
+async function fetchGnMathSource(src) {
+  try {
+    const res = await fetch(src.json + &#39;?t=&#39; + Date.now());
+    if (!res.ok) throw new Error(&#39;HTTP &#39; + res.status);
+    const data = await res.json();
+    if (!Array.isArray(data)) return [];
+    return data
+      .filter(g =&gt; g &amp;&amp; g.name &amp;&amp; g.url &amp;&amp; g.id !== -1) // skip discord promo
+      .map(g =&gt; {
+        let resolvedUrl = String(g.url)
+          .replace(/\{HTML_URL\}/g, src.html)
+          .replace(/\{COVER_URL\}/g, src.cover);
+        let resolvedCover = String(g.cover || &#39;&#39;)
+          .replace(/\{COVER_URL\}/g, src.cover)
+          .replace(/\{HTML_URL\}/g, src.html);
+        // External links (e.g. discord already filtered) keep as-is
+        if (resolvedUrl.startsWith(&#39;{&#39;)) resolvedUrl = g.url;
+        if (resolvedCover.startsWith(&#39;{&#39;) || !resolvedCover) {
+          resolvedCover = &#39;&#39;;
+        }
+        return {
+          name: g.name,
+          author: g.author || &#39;GN Math&#39;,
+          resolvedCover,
+          resolvedUrl,
+          source: src.sourceTag,
+          special: Array.isArray(g.special) ? g.special : [],
+          id: g.id
+        };
+      })
+      .filter(g =&gt; g.resolvedUrl &amp;&amp; (g.resolvedUrl.startsWith(&#39;http&#39;) || g.resolvedUrl.startsWith(&#39;//&#39;)));
+  } catch (err) {
+    console.warn(&#39;Failed to load&#39;, src.name, err);
+    return [];
+  }
+}
+
+async function loadAllSources() {
+  statusLine.textContent = &#39;Loading games…&#39;;
+  // Tag built-in games
+  const uraniumGames = customGames.map(g =&gt; ({
+    ...g,
+    source: &#39;uranium&#39;,
+    special: g.special || []
+  }));
+
+  // Fetch external JSON sources in parallel
+  const externalLists = await Promise.all(
+    externalSources.map(src =&gt; fetchGnMathSource(src))
+  );
+  const gnGames = externalLists.flat();
+
+  allGames = [...uraniumGames, ...gnGames];
+
+  // Dedupe by name + url
+  const unique = [];
+  const seen = new Set();
+  for (const item of allGames) {
+    const key = (item.name + &#39;|&#39; + item.resolvedUrl).toLowerCase();
+    if (!seen.has(key)) {
+      seen.add(key);
+      unique.push(item);
+    }
+  }
+  allGames = unique;
+
+  try {
+    localStorage.setItem(&#39;uraniumGamesCache&#39;, JSON.stringify(allGames));
+  } catch (_) {}
+
+  const uCount = allGames.filter(g =&gt; g.source === &#39;uranium&#39;).length;
+  const gCount = allGames.filter(g =&gt; g.source === &#39;gnmath&#39;).length;
+  statusLine.textContent = settings.stealth
+    ? `${allGames.length} resources ready`
+    : `${allGames.length} games ready · Uranium ${uCount} · GN Math ${gCount}`;
+
+  buildFilterBar();
+  handleSearch();
+}
+
+/* ========== GAME / APP OPENING ========== */
+function showModalError(name, reason) {
+  gameFrame.style.display = &#39;none&#39;;
+  modalError.style.display = &#39;flex&#39;;
+  document.getElementById(&#39;modalErrorTitle&#39;).textContent = name + &#39; failed to load&#39;;
+  document.getElementById(&#39;modalErrorReason&#39;).textContent = reason;
+}
+function hideModalError() {
+  modalError.style.display = &#39;none&#39;;
+  gameFrame.style.display = &#39;block&#39;;
+}
+
+function getCloakingScript() {
+  return `&lt;script&gt;
+    (function(){
+      window.onbeforeunload = function(){ return &#34;Stay on this page&#34;; };
+      window.open = function(){ return null; };
+      const killAds = function(){
+        document.querySelectorAll(&#39;.ad,.ads,.adsbygoogle,.banner-ads,[id^=&#34;ad-&#34;],iframe[src*=&#34;doubleclick&#34;],iframe[src*=&#34;googleads&#34;]&#39;).forEach(el =&gt; el.remove());
+      };
+      setInterval(killAds, 500);
+      killAds();
+    })();
+  &lt;\/script&gt;`;
+}
+
+function openGame(game) {
+  openInModal(game.name, game.resolvedUrl);
+}
+
+function openApp(name, url) {
+  openInModal(name, url);
+}
+
+function openInModal(name, url) {
+  if (!url) return;
+  gameFrame.src = &#39;about:blank&#39;;
+  hideModalError();
+  gameModal.style.display = &#39;flex&#39;;
+  document.body.style.overflow = &#39;hidden&#39;;
+  gameModal.classList.add(&#39;open&#39;);
+
+  const cacheBuster = url + (url.includes(&#39;?&#39;) ? &#39;&amp;&#39; : &#39;?&#39;) + &#39;t=&#39; + Date.now();
+  fetch(cacheBuster)
+    .then(res =&gt; {
+      if (!res.ok) throw new Error(&#39;HTTP_&#39; + res.status);
+      return res.text();
+    })
+    .then(html =&gt; {
+      if (html.length &lt; 50) throw new Error(&#39;EMPTY&#39;);
+      if (currentBlobUrl) URL.revokeObjectURL(currentBlobUrl);
+      const safety = getCloakingScript();
+      const finalHtml = html.toLowerCase().includes(&#39;&lt;head&gt;&#39;)
+        ? html.replace(/&lt;head&gt;/i, &#39;&lt;head&gt;&#39; + safety)
+        : safety + html;
+      currentBlobUrl = URL.createObjectURL(new Blob([finalHtml], {type:&#39;text/html;charset=utf-8&#39;}));
+      gameFrame.src = currentBlobUrl;
+    })
+    .catch(err =&gt; {
+      // Fallback: load URL directly in iframe (handles CORS / external hosts)
+      console.warn(&#39;Blob load failed, trying direct iframe:&#39;, err.message);
+      gameFrame.src = url;
+      // Still show a soft note if it fails later; for now hide error
+      hideModalError();
+    });
+}
+
+function closeModal() {
+  gameModal.classList.remove(&#39;open&#39;);
+  gameModal.style.display = &#39;none&#39;;
+  document.body.style.overflow = &#39;&#39;;
+  gameFrame.src = &#39;about:blank&#39;;
+  hideModalError();
+  if (currentBlobUrl) { URL.revokeObjectURL(currentBlobUrl); currentBlobUrl = null; }
+  // Exit fullscreen if active
+  if (document.fullscreenElement) {
+    document.exitFullscreen().catch(() =&gt; {});
+  }
+}
+
+/* Fullscreen button */
+document.getElementById(&#39;fullscreenBtn&#39;).onclick = () =&gt; {
+  if (!document.fullscreenElement) {
+    gameModal.requestFullscreen().catch(err =&gt; {
+      console.log(&#39;Fullscreen error:&#39;, err);
+    });
+  } else {
+    document.exitFullscreen();
+  }
+};
+
+/* ========== SETTINGS UI ========== */
+const panel   = document.getElementById(&#39;settingsPanel&#39;);
+const overlay = document.getElementById(&#39;settingsOverlay&#39;);
+
+function openSettings() {
+  document.getElementById(&#39;setPrimary&#39;).value = settings.primary;
+  document.getElementById(&#39;setBg&#39;).value = settings.bg;
+  document.getElementById(&#39;setGlow&#39;).value = settings.glow;
+  document.getElementById(&#39;setBlur&#39;).value = settings.blur;
+  document.getElementById(&#39;setCard&#39;).value = settings.card;
+  document.getElementById(&#39;setFont&#39;).value = settings.font;
+  document.getElementById(&#39;setAnim&#39;).value = settings.anim;
+  document.getElementById(&#39;setParticles&#39;).value = settings.particles;
+  document.getElementById(&#39;setClockFormat&#39;).value = settings.clockFormat;
+  document.getElementById(&#39;setReducedMotion&#39;).checked = settings.reducedMotion;
+  document.getElementById(&#39;setStealth&#39;).checked = settings.stealth;
+  applySettings();
+  panel.classList.add(&#39;open&#39;);
+  overlay.classList.add(&#39;show&#39;);
+}
+function closeSettings() {
+  panel.classList.remove(&#39;open&#39;);
+  overlay.classList.remove(&#39;show&#39;);
+  saveSettings();
+}
+
+document.getElementById(&#39;openSettings&#39;).onclick = openSettings;
+document.getElementById(&#39;closeSettings&#39;).onclick = closeSettings;
+overlay.onclick = closeSettings;
+
+document.getElementById(&#39;setPrimary&#39;).oninput = e =&gt; { settings.primary = e.target.value; applySettings(); };
+document.getElementById(&#39;setBg&#39;).oninput = e =&gt; { settings.bg = e.target.value; applySettings(); };
+document.getElementById(&#39;setGlow&#39;).oninput = e =&gt; { settings.glow = +e.target.value; applySettings(); };
+document.getElementById(&#39;setBlur&#39;).oninput = e =&gt; { settings.blur = +e.target.value; applySettings(); };
+document.getElementById(&#39;setCard&#39;).oninput = e =&gt; { settings.card = +e.target.value; applySettings(); };
+document.getElementById(&#39;setFont&#39;).oninput = e =&gt; { settings.font = +e.target.value; applySettings(); };
+document.getElementById(&#39;setAnim&#39;).oninput = e =&gt; { settings.anim = +e.target.value; applySettings(); };
+document.getElementById(&#39;setParticles&#39;).oninput = e =&gt; { settings.particles = +e.target.value; applySettings(); };
+document.getElementById(&#39;setClockFormat&#39;).onchange = e =&gt; { settings.clockFormat = e.target.value; updateClock(); };
+document.getElementById(&#39;setReducedMotion&#39;).onchange = e =&gt; { settings.reducedMotion = e.target.checked; applySettings(); };
+document.getElementById(&#39;setStealth&#39;).onchange = e =&gt; { settings.stealth = e.target.checked; applySettings(); };
+
+document.getElementById(&#39;resetSettings&#39;).onclick = () =&gt; {
+  settings = { ...DEFAULTS };
+  applySettings();
+  openSettings();
+};
+
+searchInput.addEventListener(&#39;input&#39;, () =&gt; {
+  clearTimeout(window._searchTimer);
+  window._searchTimer = setTimeout(handleSearch, 140);
+});
+
+document.getElementById(&#39;closeBtn&#39;).onclick = closeModal;
+document.addEventListener(&#39;keydown&#39;, e =&gt; {
+  if (e.key === &#39;Escape&#39;) {
+    if (panel.classList.contains(&#39;open&#39;)) closeSettings();
+    else if (gameModal.style.display === &#39;flex&#39;) closeModal();
+  }
+});
+
+applySettings();
+updateClock();
+setInterval(updateClock, 1000);
+window.addEventListener(&#39;load&#39;, loadAllSources);
+    </script>
+  </body>
+</html>
